@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+const { createProxyMiddleware } = require('http-proxy-middleware');
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -9,18 +9,32 @@ function LoginForm() {
     e.preventDefault();
 
     try {
-        
+        var myHeaders = new Headers();
+        myHeaders.append("Project-ID", "dbb327e5-ae57-4d43-9e39-32feae8e0bf9");
+        myHeaders.append("User-Name", username);
+        myHeaders.append("User-Secret", password);
 
-      await axios.get("https://cors-anywhere.herokuapp.com/api.chatengine.io/chats/", {
-        headers: {
-          "Project-ID": "dbb327e5-ae57-4d43-9e39-32feae8e0bf9",
-          "User-Name": username,
-          "User-Secret": password,
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-        },
-      });
+        var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+
+        fetch("https://api.chatengine.io/chats/", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+    //   await axios.get("https://cors-anywhere.herokuapp.com/api.chatengine.io/chats/", {
+    //     headers: {
+    //       "Project-ID": "dbb327e5-ae57-4d43-9e39-32feae8e0bf9",
+    //       "User-Name": username,
+    //       "User-Secret": password,
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    //       "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+    //     },
+    //   });
 
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
