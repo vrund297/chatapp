@@ -8,7 +8,7 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
+    try { 
         var myHeaders = new Headers();
         myHeaders.append("Project-ID", "dbb327e5-ae57-4d43-9e39-32feae8e0bf9");
         myHeaders.append("User-Name", username);
